@@ -40,7 +40,13 @@ class OpenWaitingTheirAnchorStateSpec extends StateSpecBaseClass {
     bob2blockchain.expectMsgType[WatchConfirmed]
     bob2blockchain.expectMsgType[WatchSpent]
     awaitCond(bob.stateName == OPEN_WAITING_THEIRANCHOR)
-    test((alice, bob, alice2bob, bob2alice, bob2blockchain))
+    try {
+      test((alice, bob, alice2bob, bob2alice, bob2blockchain))
+    }
+    finally {
+      alice.stop()
+      bob.stop()
+    }
   }
 
   test("recv open_complete") { case (_, bob, alice2bob, bob2alice, bob2blockchain) =>

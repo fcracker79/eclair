@@ -62,7 +62,13 @@ class NormalStateSpec extends StateSpecBaseClass with StateTestsHelperMethods {
     awaitCond(alice.stateName == NORMAL)
     awaitCond(bob.stateName == NORMAL)
     // note : alice is funder and bob is fundee, so alice has all the money
-    test((alice, bob, alice2bob, bob2alice, alice2blockchain, bob2blockchain))
+    try {
+      test((alice, bob, alice2bob, bob2alice, alice2blockchain, bob2blockchain))
+    }
+    finally {
+      alice.stop()
+      bob.stop()
+    }
   }
 
   test("recv CMD_ADD_HTLC") { case (alice, _, alice2bob, _, _, _) =>

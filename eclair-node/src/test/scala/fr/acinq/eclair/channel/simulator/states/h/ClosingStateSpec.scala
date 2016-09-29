@@ -94,7 +94,13 @@ class ClosingStateSpec extends StateSpecBaseClass with StateTestsHelperMethods {
     awaitCond(alice.stateName == CLOSING)
     awaitCond(bob.stateName == CLOSING)
     // both nodes are now in CLOSING state with a mutual close tx pending for confirmation
-    test((alice, bob, alice2bob, bob2alice, alice2blockchain, bob2blockchain, bobCommitTxes))
+    try {
+      test((alice, bob, alice2bob, bob2alice, alice2blockchain, bob2blockchain, bobCommitTxes))
+    }
+    finally {
+      alice.stop()
+      bob.stop()
+    }
   }
 
   test("recv BITCOIN_CLOSE_DONE") { case (alice, bob, alice2bob, bob2alice, _, _, _) =>

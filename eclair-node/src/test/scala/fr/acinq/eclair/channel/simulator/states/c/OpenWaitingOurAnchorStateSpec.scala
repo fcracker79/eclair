@@ -50,7 +50,13 @@ class OpenWaitingOurAnchorStateSpec extends StateSpecBaseClass {
       bob ! BITCOIN_ANCHOR_DEPTHOK
       awaitCond(alice.stateName == OPEN_WAITING_OURANCHOR)
     }
-    test((alice, alice2bob, bob2alice, alice2blockchain, blockchainA))
+    try {
+      test((alice, alice2bob, bob2alice, alice2blockchain, blockchainA))
+    }
+    finally {
+      alice.stop()
+      bob.stop()
+    }
   }
 
   test("recv open_complete") { case (alice, alice2bob, bob2alice, alice2blockchain, _) =>

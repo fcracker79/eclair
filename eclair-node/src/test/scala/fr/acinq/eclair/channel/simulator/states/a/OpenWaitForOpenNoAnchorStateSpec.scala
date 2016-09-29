@@ -30,7 +30,13 @@ class OpenWaitForOpenNoAnchorStateSpec extends StateSpecBaseClass {
       bob2alice.expectMsgType[open_channel]
       awaitCond(bob.stateName == OPEN_WAIT_FOR_OPEN_NOANCHOR)
     }
-    test((bob, alice2bob, bob2alice, bob2blockchain))
+    try {
+      test((bob, alice2bob, bob2alice, bob2blockchain))
+    }
+    finally {
+      alice.stop()
+      bob.stop()
+    }
   }
 
   test("recv open_channel") { case (bob, alice2bob, bob2alice, bob2blockchain) =>

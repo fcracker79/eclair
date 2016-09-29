@@ -96,7 +96,13 @@ class ShutdownStateSpec extends StateSpecBaseClass with StateTestsHelperMethods 
     bob2alice.forward(alice)
     awaitCond(alice.stateName == SHUTDOWN)
     awaitCond(bob.stateName == SHUTDOWN)
-    test((alice, bob, alice2bob, bob2alice, alice2blockchain, bob2blockchain))
+    try {
+      test((alice, bob, alice2bob, bob2alice, alice2blockchain, bob2blockchain))
+    }
+    finally {
+      alice.stop()
+      bob.stop()
+    }
   }
 
   test("recv CMD_FULFILL_HTLC") { case (alice, bob, alice2bob, bob2alice, _, _) =>

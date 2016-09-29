@@ -54,7 +54,13 @@ class OpenWaitForCompleteOurAnchorStateSpec extends StateSpecBaseClass {
       alice2blockchain.forward(blockchainA)
       awaitCond(alice.stateName == OPEN_WAIT_FOR_COMPLETE_OURANCHOR)
     }
-    test((alice, alice2bob, bob2alice, alice2blockchain, blockchainA))
+    try {
+      test((alice, alice2bob, bob2alice, alice2blockchain, blockchainA))
+    }
+    finally {
+      alice.stop()
+      bob.stop()
+    }
   }
 
   test("recv open_complete") { case (alice, alice2bob, bob2alice, alice2blockchain, _) =>

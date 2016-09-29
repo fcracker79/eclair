@@ -110,7 +110,14 @@ class NegotiatingStateSpec extends StateSpecBaseClass {
     bob2alice.forward(alice)
     awaitCond(alice.stateName == NEGOTIATING)
     awaitCond(bob.stateName == NEGOTIATING)
-    test((alice, bob, alice2bob, bob2alice, alice2blockchain, bob2blockchain))
+
+    try {
+      test((alice, bob, alice2bob, bob2alice, alice2blockchain, bob2blockchain))
+    }
+    finally {
+      alice.stop()
+      bob.stop()
+    }
   }
 
   test("recv close_signature (theirCloseFee != ourCloseFee") { case (alice, bob, alice2bob, bob2alice, _, _) =>
